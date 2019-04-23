@@ -1,5 +1,10 @@
 // consts
 const serverURL = "http://localhost:8080/";
+const parMap = {
+    "all": "periodType=ALL",
+    "year": "periodType=CURRENT_YEAR",
+    "month": "periodType=CURRENT_MONTH"
+}
 
 // elements
 var sendTable = document.querySelector('.table.send');
@@ -9,11 +14,17 @@ var sendSwitcher = document.querySelector('.send-switcher');
 
 var btnSend = document.querySelector('.btn-send');
 
+var ddList = document.querySelector('select');
+
 // events
 document.addEventListener("DOMContentLoaded", fetchData);
+
 btnSend.addEventListener('click', sendData);
+
 histSwitcher.addEventListener('click', switchToHist);
 sendSwitcher.addEventListener('click', switchToSend);
+
+ddList.addEventListener('change', fetchData);
 
 // aux
 function cout(message) {
@@ -63,19 +74,27 @@ function printErr(err) {
     cout("err!");
     cout(err);
 }
+function removeElements(selector) {
+    let elements = document.querySelectorAll(selector);
+    for (let element of elements)
+        element.remove();
+}
 function makeRow(values) {
     let row = document.createElement('tr');
     for (let value of values) {
         let cell = document.createElement('td');
         cell.innerHTML = value;
+        cell.classList.add('removable');
         row.appendChild(cell);
     }
     return row;
 }
 function fillTable(response) {
-    // todo clear table
     let data = response.data;
     cout(data);
+
+    removeElements(".table.hist .removable");
+
     for (let entry of data) {
         let elAmount = entry.electricity;
         let coldAmount = entry.coldWater;
@@ -86,16 +105,17 @@ function fillTable(response) {
 }
 function fetchData() {
     cout("fetching data...");
+    let param = parMap[ddList.value];
     let token = localStorage.getItem("userToken");
-    makeGet("meters/?periodType=ALL", fillTable, printErr, token)
+    makeGet("meters/?" + param, fillTable, printErr, token)
 }
 
 function sendData() {
     let elAmount = document.querySelector('.electro').value;
     let coldAmount = document.querySelector('.cold').value;
     let hotAmount = document.querySelector('.hot').value;
-    
-    let data = {
+
+    let lastData = {
         "electricity": elAmount,
         "coldWater": coldAmount,
 	    "hotWater": hotAmount
@@ -103,6 +123,6 @@ function sendData() {
 
     let token = localStorage.getItem("userToken");
 
-    makePost("meters/send", data, fetchData, printErr, token);
+    makePost("meters/send", lastData, fetchData, printErr, token);
 }
 
