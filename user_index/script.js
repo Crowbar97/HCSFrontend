@@ -1,3 +1,4 @@
+//-share------------------------------------------------------------------------------
 // consts
 const serverURL = "http://localhost:8080/";
 const parMap = {
@@ -5,44 +6,6 @@ const parMap = {
     "year": "periodType=CURRENT_YEAR",
     "month": "periodType=CURRENT_MONTH"
 }
-
-// elements
-var sendTable = document.querySelector('.table.send');
-var histSwitcher = document.querySelector('.hist-switcher');
-var histTable = document.querySelector('.table.hist');
-var sendSwitcher = document.querySelector('.send-switcher');
-
-var btnSend = document.querySelector('.btn-send');
-
-var ddList = document.querySelector('select');
-
-// events
-document.addEventListener("DOMContentLoaded", fetchData);
-
-btnSend.addEventListener('click', sendData);
-
-histSwitcher.addEventListener('click', switchToHist);
-sendSwitcher.addEventListener('click', switchToSend);
-
-ddList.addEventListener('change', fetchData);
-
-// aux
-function cout(message) {
-    console.log(message);
-}
-
-// switching
-function switchToHist() {
-    sendTable.classList.add('hidden');
-    histTable.classList.remove('hidden');
-    cout("switched to hist!");
-}
-function switchToSend() {
-    histTable.classList.add('hidden');
-    sendTable.classList.remove('hidden');
-    cout("switched to send!");
-}
-
 // proxy functions
 function makePost(subPath, body, succHandler, errHandler, token = null) {
     let headers = {
@@ -67,6 +30,65 @@ function makeGet(subPath, succHandler, errHandler, token = null) {
     axios.get(serverURL + subPath, { "headers": headers })
             .then(response => succHandler(response))
             .catch(e => errHandler(e));
+}
+// aux
+function cout(message) {
+    console.log(message);
+}
+//------------------------------------------------------------------------------------
+
+// elements
+var exitBtn = document.querySelector('.exit-btn');
+
+var sendTable = document.querySelector('.table.send');
+var histSwitcher = document.querySelector('.hist-switcher');
+var histTable = document.querySelector('.table.hist');
+var sendSwitcher = document.querySelector('.send-switcher');
+
+var sendBtn = document.querySelector('.send-btn');
+
+var ddList = document.querySelector('select');
+
+// events
+document.addEventListener("DOMContentLoaded", checkUserToken);
+
+exitBtn.addEventListener('click', exit);
+
+sendBtn.addEventListener('click', sendData);
+
+histSwitcher.addEventListener('click', switchToHist);
+sendSwitcher.addEventListener('click', switchToSend);
+
+ddList.addEventListener('change', fetchData);
+
+function checkUserToken() {
+    if (localStorage.hasOwnProperty("userToken")) {
+        cout("User token was confirm!");
+        fetchData();
+    }
+    else {
+        cout("User token was not confirm!");
+        window.location.href = "index.html";
+    }
+}
+
+// exit
+function exit() {
+    localStorage.removeItem("userToken");
+    cout("User token was removed!")
+    window.location.href = "index.html";
+}
+
+// switching
+function switchToHist() {
+    sendTable.classList.add('hidden');
+    histTable.classList.remove('hidden');
+    cout("switched to hist!");
+}
+function switchToSend() {
+    histTable.classList.add('hidden');
+    sendTable.classList.remove('hidden');
+    cout("switched to send!");
 }
 
 // data actions

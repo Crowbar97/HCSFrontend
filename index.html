@@ -11,21 +11,26 @@
     <div class="login-page">
         <div class="form">
           <form class="sign-up-form hidden">
-            <input type="text" placeholder="username"/>
-            <input type="password" placeholder="password"/>
-            <input type="text" placeholder="email address"/>
-            <button class="sign-up-btn">Sign Up</button>
-            <p class="message">Already registered? <a class="sign-in-switch" href="#">Sign In</a></p>
+            <input type="text" placeholder="Логин" class="username"/>
+            <input type="password" placeholder="Пароль" class="password"/>
+            <input type="text" placeholder="Эл. почта" class="email"/>
+            <input type="text" placeholder="Фамилия" class="lastName"/>
+            <input type="text" placeholder="Имя" class="firstName"/>
+            <input type="text" placeholder="Отчество" class="middleName"/>
+            <input type="text" placeholder="Номер квартиры" class="apartment"/>
+            <input type="text" placeholder="Номер телефона" class="phoneNumber"/>
+            <button class="sign-up-btn">Регистрация</button>
+            <p class="message">Уже зарегистрированы? <a class="sign-in-switch" href="#">Войти</a></p>
           </form>
           <form class="sign-in-form">
-            <input type="text" placeholder="username" class="username"/>
-            <input type="password" placeholder="password" class="password"/>
-            <button class="sign-in-btn">Sign In</button>
-            <p class="message">Not registered? <a class="sign-up-switch" href="#">Sign Up</a></p>
+            <input type="text" placeholder="Логин" class="username"/>
+            <input type="password" placeholder="Пароль" class="password"/>
+            <button class="sign-in-btn">Войти</button>
+            <p class="message">Не зарегистрированы? <a class="sign-up-switch" href="#">Регистрация</a></p>
           </form>
         </div>
       </div>
-      <script src="index/script.js"></script>
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="index/script.js"></script>
 </body>
 </html>
